@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escuela de Espalda · 15 min/día</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4EFE6;
+  --bg-elev:#FBF7F0;
+  --bg-card:#FFFFFF;
+  --ink:#1B2027;
+  --ink-soft:#5A6473;
+  --ink-faint:#666666;
+  --line:#E5DDCB;
+  --line-soft:#EFE9DB;
+  --accent:#2D5F5D;
+  --accent-deep:#1F4341;
+  --accent-soft:#DEE9E8;
+  --warm:#ffa500;
+  --done:#7A9E7E;
+  --shadow:0 1px 0 rgba(27,32,39,0.04), 0 8px 24px -12px rgba(27,32,39,0.10);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+
+body{
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(45,95,93,0.04) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(201,125,79,0.04) 0%, transparent 40%);
+  min-height:100vh;
+}
+
+.app{
+  max-width:1380px;
+  margin:0 auto;
+  padding:32px 40px 80px;
+}
+
+/* ============ HEADER ============ */
+header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+  margin-bottom:28px;
+  padding-bottom:24px;
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.brand .eyebrow{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:40px;
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  color:var(--ink);
+  font-variation-settings:"opsz" 100;
+}
+.brand h1{
+  font-family:'DM Sans',sans-serif;
+  font-weight:400;
+  font-size:20px;
+  line-height:1.45;
+  letter-spacing:0.01em;
+  color:var(--ink-soft);
+  max-width:620px;
+}
+.progress-pill{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:10px 16px;
+  min-height:48px;
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:100px;
+  box-shadow:var(--shadow);
+  box-sizing:border-box;
+}
+.progress-track{
+  width:140px;
+  height:6px;
+  background:var(--line-soft);
+  border-radius:100px;
+  overflow:hidden;
+  position:relative;
+}
+.progress-fill{
+  height:100%;
+  background:#7a9e7e;
+  border-radius:100px;
+  width:0%;
+  transition:width 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.progress-text{
+  font-size:16px;
+  font-weight:500;
+  color:var(--ink-soft);
+  font-variant-numeric:tabular-nums;
+}
+
+/* ============ DAY TABS ============ */
+.days{
+  display:flex;
+  gap:6px;
+  margin-bottom:24px;
+  overflow-x:auto;
+  padding-bottom:4px;
+  scrollbar-width:none;
+}
+.days::-webkit-scrollbar{display:none}
+.day-tab{
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2px;
+  padding:12px 18px 12px 18px;
+  background:transparent;
+  border:1px solid transparent;
+  border-radius:14px;
+  cursor:pointer;
+  font-family:inherit;
+  text-align:left;
+  transition:all 0.15s ease;
+  position:relative;
+  min-width:104px;
+}
+.day-tab:hover{background:var(--bg-elev)}
+.day-tab .day-name{
+  font-size:20px;
+  font-weight:600;
+  color:var(--ink);
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+}
+.day-tab .day-load{
+  font-size:16px;
+  color:var(--ink-faint);
+  letter-spacing:0.04em;
+}
+.day-tab.active{
+  background:var(--ink);
+  border-color:var(--ink);
+}
+.day-tab.active .day-name{color:var(--bg-elev)}
+.day-tab.active .day-load{color:rgba(255,255,255,0.6)}
+.day-tab.today::after{
+  content:"";
+  position:absolute;
+  top:8px;
+  right:10px;
+  width:6px;
+  height:6px;
+  background:var(--warm);
+  border-radius:50%;
+}
+
+/* ============ DAY HERO ============ */
+.day-hero{
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px 28px;
+  margin-bottom:28px;
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr;
+  gap:32px;
+  align-items:center;
+  box-shadow:var(--shadow);
+}
+.hero-block .label{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin-bottom:6px;
+}
+.hero-block .value{
+  font-family:'Fraunces',serif;
+  font-size:22px;
+  line-height:1.15;
+  letter-spacing:-0.01em;
+  font-weight:400;
+  font-variation-settings:"opsz" 60;
+}
+.hero-block.focus .value em{font-style:italic;color:var(--accent)}
+.hero-block .desc{
+  font-size:16px;
+  color:var(--ink-soft);
+  line-height:1.45;
+  margin-top:4px;
+}
+.load-bars{
+  display:inline-flex;
+  gap:3px;
+  margin-left:8px;
+  vertical-align:middle;
+}
+.load-bars span{
+  display:inline-block;
+  width:5px;
+  height:14px;
+  background:var(--line);
+  border-radius:1px;
+}
+.load-bars span.on{background:#ffa500}
+
+/* ============ MAIN GRID ============ */
+.main{
+  display:grid;
+  grid-template-columns:1fr 380px;
+  gap:32px;
+}
+
+/* ----- Player ----- */
+.player-card{
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.player-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:16px 22px;
+  border-bottom:1px solid var(--line-soft);
+}
+.block-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 12px;
+  background:var(--accent-soft);
+  border-radius:100px;
+  font-size:16px;
+  font-weight:600;
+  color:var(--accent-deep);
+  letter-spacing:0.02em;
+}
+.block-badge .num{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-weight:600;
+  font-size:20px;
+}
+.exercise-counter{
+  font-size:16px;
+  color:var(--ink-faint);
+  letter-spacing:0.04em;
+  font-variant-numeric:tabular-nums;
+}
+.video-wrap{
+  position:relative;
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  background:#1B2027;
+  overflow:hidden;
+}
+.video-link{
+  position:absolute;
+  inset:0;
+  display:block;
+  text-decoration:none;
+  cursor:pointer;
+}
+.video-link.hidden{display:none}
+.video-link img,
+img#playerThumb{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  transition:opacity 0.25s ease, transform 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.video-link:hover img{opacity:0.55;transform:scale(1.03)}
+#playerVideo{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:none;
+}
+#playerVideo.shown{display:block}
+.play-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  pointer-events:none;
+}
+.play-btn{
+  width:84px;
+  height:84px;
+  background:rgba(255,255,255,0.96);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 12px 40px rgba(0,0,0,0.35);
+  transition:transform 0.25s ease, background 0.2s ease;
+}
+.video-wrap:hover .play-btn{transform:scale(1.08);background:#fff}
+.play-btn svg{width:30px;height:30px;fill:var(--ink);margin-left:5px}
+.play-label{
+  font-size:16px;
+  font-weight:600;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:#fff;
+  background:rgba(0,0,0,0.55);
+  padding:6px 14px;
+  border-radius:100px;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.exercise-info{padding:24px 28px 28px}
+.exercise-info h2{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:32px;
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  margin-bottom:18px;
+  font-variation-settings:"opsz" 80;
+}
+.exercise-meta{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  margin-bottom:20px;
+  background:var(--bg-elev);
+}
+.meta-cell{
+  padding:14px 18px;
+  position:relative;
+}
+.meta-cell + .meta-cell{border-left:1px solid var(--line)}
+.meta-cell .label{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin-bottom:4px;
+}
+.meta-cell .value{
+  font-family:'Fraunces',serif;
+  font-size:22px;
+  font-weight:400;
+  letter-spacing:-0.01em;
+  font-variation-settings:"opsz" 60;
+}
+.indications{
+  padding:16px 18px;
+  background:var(--bg-elev);
+  border:1px solid var(--line);
+  border-radius:12px;
+  font-size:20px;
+  color:var(--ink-soft);
+  line-height:1.55;
+  position:relative;
+}
+.indications::before{
+  content:"Indicaciones";
+  display:block;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin-bottom:6px;
+}
+.player-actions{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+.btn{
+  flex:1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:13px 20px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--bg-card);
+  color:var(--ink);
+  font-family:inherit;
+  font-size:20px;
+  font-weight:500;
+  cursor:pointer;
+  transition:all 0.15s ease;
+}
+.btn:hover{background:var(--bg-elev);border-color:var(--ink-soft)}
+.btn.primary{background:var(--ink);color:var(--bg-elev);border-color:var(--ink)}
+.btn.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+.btn.done{background:var(--done);color:white;border-color:var(--done)}
+.btn svg{width:16px;height:16px}
+
+/* ----- Sidebar ----- */
+.sidebar{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  min-width:0;
+}
+.sidebar-header{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  padding:0 4px;
+}
+.sidebar-header h3{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:24px;
+  letter-spacing:-0.01em;
+  font-variation-settings:"opsz" 60;
+}
+.sidebar-header .reset{
+  font-size:16px;
+  color:var(--accent);
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-family:inherit;
+  text-decoration:underline;
+  text-decoration-color:var(--accent);
+  text-underline-offset:3px;
+}
+.sidebar-header .reset:hover{color:var(--accent-deep);text-decoration-color:var(--accent-deep)}
+.exercise-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-height:none;
+}
+.ex-item{
+  display:grid;
+  grid-template-columns:32px 100px 1fr;
+  gap:12px;
+  padding:10px;
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  cursor:pointer;
+  transition:all 0.15s ease;
+  align-items:center;
+  text-align:left;
+  font-family:inherit;
+  width:100%;
+  position:relative;
+}
+.ex-item:hover{border-color:var(--ink-soft);transform:translateX(-2px)}
+.ex-item.active{
+  background:var(--ink);
+  border-color:var(--ink);
+}
+.ex-item.active .ex-num{color:rgba(255,255,255,0.45)}
+.ex-item.active .ex-name{color:var(--bg-elev)}
+.ex-item.active .ex-meta{color:rgba(255,255,255,0.55)}
+.ex-num{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:22px;
+  color:var(--ink-faint);
+  text-align:center;
+  font-variant-numeric:tabular-nums;
+  font-variation-settings:"opsz" 60;
+  cursor:pointer;
+  user-select:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:32px;
+  width:32px;
+  border-radius:50%;
+  transition:all 0.2s ease;
+}
+.ex-item.completed .ex-num{
+  background:var(--done);
+  color:white;
+  font-style:normal;
+  font-family:'DM Sans',sans-serif;
+  font-size:20px;
+}
+.ex-item.completed.active .ex-num{
+  background:var(--done);
+  color:white;
+}
+.ex-item.completed .ex-name{
+  text-decoration:line-through;
+  text-decoration-color:var(--ink-faint);
+  color:var(--ink-faint);
+}
+.ex-item.completed.active .ex-name{
+  color:#ffffff;
+  text-decoration-color:#ffffff;
+}
+.ex-thumb{
+  width:100px;
+  height:60px;
+  background:var(--line-soft) center/cover no-repeat;
+  border-radius:6px;
+  position:relative;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.ex-thumb::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, transparent 60%, rgba(0,0,0,0.15));
+}
+.ex-info{
+  min-width:0;
+  overflow:hidden;
+}
+.ex-name{
+  font-size:16px;
+  font-weight:500;
+  line-height:1.25;
+  margin-bottom:2px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.ex-meta{
+  font-size:16px;
+  color:var(--ink-faint);
+  letter-spacing:0.02em;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ----- Footer hint ----- */
+.footer-hint{
+  margin-top:32px;
+  text-align:center;
+  font-size:24px;
+  color:var(--ink-faint);
+  font-style:italic;
+  font-family:'Fraunces',serif;
+  font-variation-settings:"opsz" 60;
+}
+.footer-hint span{color:#cb5734}
+
+/* ----- Info cards (progresión + alerta) ----- */
+.info-cards{
+  margin-top:48px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+}
+.info-card{
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:28px 32px;
+  box-shadow:var(--shadow);
+}
+.info-card.alert{
+}
+.info-card h3{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:14px;
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:32px;
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  margin-bottom:24px;
+  color:var(--ink);
+  font-variation-settings:"opsz" 80;
+}
+.card-icon{
+  width:40px;
+  height:40px;
+  flex-shrink:0;
+}
+.icon-progress{color:var(--done)}
+.icon-alert{color:#cb5734}
+.info-card ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.info-card li{
+  position:relative;
+  padding:12px 0 12px 22px;
+  font-size:16px;
+  line-height:1.55;
+  color:var(--ink-soft);
+  border-bottom:1px solid var(--line-soft);
+}
+.info-card li:last-child{border-bottom:none}
+.info-card li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:22px;
+  width:10px;
+  height:1px;
+  background:var(--ink-faint);
+}
+.disclaimer{
+  margin:32px auto 0;
+  text-align:center;
+  font-size:24px;
+  color:var(--ink-faint);
+  font-style:italic;
+  font-family:'Fraunces',serif;
+  font-variation-settings:"opsz" 60;
+  max-width:680px;
+  line-height:1.5;
+}
+
+/* ----- Responsive ----- */
+@media (max-width:1024px){
+  .main{grid-template-columns:1fr}
+  .day-hero{grid-template-columns:1fr;gap:18px}
+  .info-cards{grid-template-columns:1fr}
+  .app{padding:24px 20px 60px}
+  header{flex-wrap:wrap}
+  .brand .eyebrow{font-size:32px}
+  .exercise-info h2{font-size:26px}
+}
+@media (max-width:600px){
+  .ex-item{grid-template-columns:32px 80px 1fr;gap:10px}
+  .ex-thumb{width:80px;height:48px}
+  .day-hero{padding:18px 20px}
+  .exercise-info{padding:18px 20px 22px}
+  .player-actions{flex-direction:column}
+}
+
+/* Smooth fade for video swaps */
+.fade-in{animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* ============ HEADER ACTIONS ============ */
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.btn-info{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 18px;
+  min-height:48px;
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:100px;
+  color:var(--ink);
+  font-family:inherit;
+  font-size:16px;
+  font-weight:500;
+  cursor:pointer;
+  box-shadow:var(--shadow);
+  transition:all 0.15s ease;
+  box-sizing:border-box;
+}
+.btn-info:hover{background:var(--bg-elev);border-color:var(--ink-soft)}
+.btn-info svg{width:24px;height:24px;color:var(--done)}
+
+/* ============ INFO PANEL ============ */
+.panel-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(20,24,32,0.42);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 0.3s ease, visibility 0.3s ease;
+  z-index:90;
+}
+.panel-backdrop.open{opacity:1;visibility:visible}
+.info-panel{
+  position:fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  width:560px;
+  max-width:92vw;
+  background:var(--bg-elev);
+  z-index:100;
+  transform:translateX(100%);
+  transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  display:flex;
+  flex-direction:column;
+  box-shadow:-20px 0 60px -20px rgba(20,24,32,0.25);
+}
+.info-panel.open{transform:translateX(0)}
+.panel-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:24px 32px 20px;
+  border-bottom:1px solid var(--line);
+  flex-shrink:0;
+}
+.panel-header h2{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:28px;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  font-variation-settings:"opsz" 80;
+}
+.panel-close{
+  width:36px;
+  height:36px;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--ink-soft);
+  transition:all 0.15s ease;
+}
+.panel-close:hover{background:var(--line-soft);color:var(--ink)}
+.panel-close svg{width:20px;height:20px}
+.panel-content{
+  overflow-y:auto;
+  padding:28px 32px 40px;
+  flex:1;
+}
+.panel-section + .panel-section{margin-top:32px;padding-top:32px;border-top:1px solid var(--line-soft)}
+.panel-section h3{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:22px;
+  line-height:1.2;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin-bottom:14px;
+  font-variation-settings:"opsz" 60;
+}
+.panel-section p{
+  font-size:16px;
+  line-height:1.6;
+  color:var(--ink-soft);
+  margin-bottom:12px;
+}
+.panel-section p:last-child{margin-bottom:0}
+.panel-section p strong{color:var(--ink);font-weight:600}
+.panel-list{
+  list-style:none;
+  padding:0;
+  margin:8px 0 0;
+}
+.panel-list li{
+  position:relative;
+  padding:10px 0 10px 22px;
+  font-size:16px;
+  line-height:1.55;
+  color:var(--ink-soft);
+  border-bottom:1px solid var(--line-soft);
+}
+.panel-list li:last-child{border-bottom:none}
+.panel-list li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:20px;
+  width:10px;
+  height:1px;
+  background:var(--ink-faint);
+}
+.panel-list li strong{color:var(--ink);font-weight:600;display:block;margin-bottom:2px;font-family:'Fraunces',serif;font-size:17px;font-variation-settings:"opsz" 60}
+.panel-list li.golden{
+  background:linear-gradient(to right, rgba(255,165,0,0.06), transparent);
+  border-left:3px solid #ffa500;
+  padding-left:18px;
+}
+.panel-list li.golden::before{display:none}
+
+/* Theory video cards */
+.theory-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:4px;
+}
+.theory-card{
+  display:grid;
+  grid-template-columns:36px 132px 1fr;
+  gap:14px;
+  align-items:center;
+  padding:10px;
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:12px;
+  text-decoration:none;
+  color:inherit;
+  transition:all 0.15s ease;
+  cursor:pointer;
+}
+.theory-card:hover{
+  border-color:var(--ink-soft);
+  transform:translateX(-2px);
+}
+.theory-num{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:24px;
+  color:var(--ink-faint);
+  text-align:center;
+  font-variation-settings:"opsz" 60;
+}
+.theory-thumb{
+  width:132px;
+  height:74px;
+  background:var(--line-soft) center/cover no-repeat;
+  border-radius:6px;
+  position:relative;
+  overflow:hidden;
+}
+.theory-thumb::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.25));
+}
+.theory-thumb svg{
+  position:absolute;
+  inset:0;
+  margin:auto;
+  width:32px;
+  height:32px;
+  fill:#fff;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  z-index:1;
+}
+.theory-card[data-local="true"] .theory-meta::after{
+  content:" · Disponible en local";
+  color:var(--accent);
+  font-weight:500;
+}
+
+/* ============ THEORY VIDEO MODAL ============ */
+.video-modal-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(15,18,22,0.78);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity 0.25s ease, visibility 0.25s ease;
+  z-index:200;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+}
+.video-modal-backdrop.open{opacity:1;visibility:visible}
+.video-modal{
+  position:relative;
+  width:min(960px, 100%);
+  max-height:90vh;
+  background:#0d1014;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,0.6);
+  transform:scale(0.96);
+  transition:transform 0.25s cubic-bezier(0.4,0,0.2,1);
+  display:flex;
+  flex-direction:column;
+}
+.video-modal-backdrop.open .video-modal{transform:scale(1)}
+.video-modal-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 20px;
+  background:rgba(255,255,255,0.04);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  flex-shrink:0;
+}
+.video-modal-title{
+  font-family:'Fraunces',serif;
+  font-weight:400;
+  font-size:18px;
+  color:#f4efe6;
+  letter-spacing:-0.01em;
+}
+.video-modal-close{
+  width:36px;
+  height:36px;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:rgba(255,255,255,0.7);
+  transition:all 0.15s ease;
+  flex-shrink:0;
+}
+.video-modal-close:hover{background:rgba(255,255,255,0.1);color:#fff}
+.video-modal-close svg{width:20px;height:20px}
+.video-modal-body{
+  position:relative;
+  background:#000;
+  aspect-ratio:16/9;
+  width:100%;
+}
+.video-modal-body video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  background:#000;
+}
+.video-modal-fallback{
+  position:absolute;
+  inset:0;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  padding:24px;
+  text-align:center;
+  color:#f4efe6;
+}
+.video-modal-fallback.show{display:flex}
+.video-modal-fallback p{
+  font-size:16px;
+  line-height:1.5;
+  max-width:440px;
+  color:rgba(255,255,255,0.85);
+}
+.video-modal-fallback a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:12px 20px;
+  background:#fff;
+  color:#1B2027;
+  border-radius:100px;
+  text-decoration:none;
+  font-weight:500;
+  font-size:15px;
+  transition:transform 0.15s ease;
+}
+.video-modal-fallback a:hover{transform:scale(1.04)}
+.video-modal-fallback a svg{width:16px;height:16px}
+.theory-info{min-width:0}
+.theory-title{
+  display:block;
+  font-size:16px;
+  font-weight:500;
+  line-height:1.3;
+  color:var(--ink);
+  margin-bottom:3px;
+}
+.theory-meta{
+  display:block;
+  font-size:14px;
+  color:var(--ink-faint);
+}
+
+@media (max-width:600px){
+  .info-panel{width:100%}
+  .panel-header{padding:18px 20px 16px}
+  .panel-content{padding:20px 22px 32px}
+  .panel-header h2{font-size:24px}
+  .btn-info span{display:none}
+  .btn-info{padding:10px}
+  .theory-card{grid-template-columns:28px 100px 1fr;gap:10px}
+  .theory-thumb{width:100px;height:56px}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header>
+    <div class="brand">
+      <span class="eyebrow">Programa diario de Escuela de Espalda</span>
+      <h1>Periodización de 7 días · 15 min/día · curso de María Dolores Mazoteras García</h1>
+    </div>
+    <div class="header-actions">
+      <button class="btn-info" id="btnInfo" aria-label="Empieza por aquí">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" x2="12" y1="16" y2="12"/>
+          <line x1="12" x2="12.01" y1="8" y2="8"/>
+        </svg>
+        <span>Empieza por aquí</span>
+      </button>
+      <div class="progress-pill" title="Progreso del día">
+        <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+        <div class="progress-text" id="progText">0 / 0</div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="days" id="days"></nav>
+
+  <section class="day-hero" id="dayHero"></section>
+
+  <main class="main">
+    <article class="player-card">
+      <div class="player-header">
+        <div class="block-badge"><span class="num" id="blockNum">1</span><span id="blockName">Activación</span></div>
+        <div class="exercise-counter" id="exCounter">Ejercicio 1 de 7</div>
+      </div>
+      <div class="video-wrap">
+        <a class="video-link" id="playerLink" href="" target="_blank" rel="noopener" title="Abrir en YouTube">
+          <img id="playerThumb" alt="" loading="eager">
+          <div class="play-overlay">
+            <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="play-label">Ver en YouTube</span>
+          </div>
+        </a>
+        <video id="playerVideo" controls preload="metadata" playsinline webkit-playsinline></video>
+      </div>
+      <div class="exercise-info">
+        <h2 id="exName"></h2>
+        <div class="exercise-meta">
+          <div class="meta-cell">
+            <div class="label">Tiempo</div>
+            <div class="value" id="exTime"></div>
+          </div>
+          <div class="meta-cell">
+            <div class="label">Series · Reps</div>
+            <div class="value" id="exDosage"></div>
+          </div>
+        </div>
+        <div class="indications" id="exNotes"></div>
+        <div class="player-actions">
+          <button class="btn" id="btnPrev">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            Anterior
+          </button>
+          <button class="btn primary" id="btnDone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
+            <span id="btnDoneLbl">Marcar como hecho</span>
+          </button>
+          <button class="btn" id="btnNext">
+            Siguiente
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>Sesión del día</h3>
+        <button class="reset" id="btnReset">Reiniciar día</button>
+      </div>
+      <div class="exercise-list" id="exList"></div>
+    </aside>
+  </main>
+
+  <p class="footer-hint">Norma de oro: si un ejercicio te genera dolor, sustitúyelo por báscula pélvica o respiración. <span>Molestia muscular sí; dolor punzante o irradiado, no.</span></p>
+
+  <section class="info-cards">
+    <article class="info-card">
+      <h3>
+        <svg class="card-icon icon-progress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+          <polyline points="16 7 22 7 22 13"/>
+        </svg>
+        Cómo progresar a partir de la semana 4
+      </h3>
+      <ul>
+        <li>Planchas: cuando mantengas la versión completa con calidad ≥ 45 s, sube a 2 × 60 s o añade una serie.</li>
+        <li>Iso del recto / oblicuos: progresar primero el tiempo (hasta 30 s) antes que las series.</li>
+        <li>Trabajo dinámico abdominal y excéntrico: cuando ejecutes con técnica perfecta, sube de 2 × 10 a 3 × 10.</li>
+        <li>Paravertebrales en prono: añadir mantenimientos de 5 s antes que aumentar repeticiones.</li>
+        <li>Indicador clave: que el transverso siga activo durante toda la sesión sin que tengas que pensarlo.</li>
+      </ul>
+    </article>
+
+    <article class="info-card alert">
+      <h3>
+        <svg class="card-icon icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" x2="12" y1="9" y2="13"/>
+          <line x1="12" x2="12.01" y1="17" y2="17"/>
+        </svg>
+        Señales para parar y consultar a un profesional
+      </h3>
+      <ul>
+        <li>Dolor que se irradia por la pierna o el brazo, hormigueos o pérdida de fuerza.</li>
+        <li>Dolor que aparece o empeora con un ejercicio y no remite al detenerlo.</li>
+        <li>Dolor lumbar acompañado de fiebre, pérdida de peso no explicada o pérdida de control de esfínteres (atención inmediata).</li>
+      </ul>
+    </article>
+  </section>
+
+  <p class="disclaimer">Este programa es educativo y no sustituye el criterio de tu fisioterapeuta o médico de referencia.</p>
+
+</div>
+
+<div class="panel-backdrop" id="panelBackdrop"></div>
+<aside class="info-panel" id="infoPanel" role="dialog" aria-modal="true" aria-labelledby="panelTitle">
+  <div class="panel-header">
+    <h2 id="panelTitle">Cómo funciona el programa</h2>
+    <button class="panel-close" id="panelClose" aria-label="Cerrar panel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </div>
+  <div class="panel-content">
+
+    <section class="panel-section">
+      <h3>Empieza por aquí</h3>
+      <p>El curso recomienda ver estos 3 vídeos antes de comenzar el programa diario. Sientan las bases del trabajo respiratorio, del suelo pélvico y de la activación abdominal.</p>
+      <div class="theory-list">
+        <a class="theory-card" data-video-id="giotibSftrc" href="https://www.youtube.com/watch?v=giotibSftrc" target="_blank" rel="noopener">
+          <span class="theory-num">1</span>
+          <span class="theory-thumb" data-thumb-id="giotibSftrc">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          <span class="theory-info">
+            <span class="theory-title">Introducción teórica</span>
+            <span class="theory-meta">Conceptos clave del programa</span>
+          </span>
+        </a>
+        <a class="theory-card" data-video-id="as6CHRqCJ1o" href="https://www.youtube.com/watch?v=as6CHRqCJ1o" target="_blank" rel="noopener">
+          <span class="theory-num">2</span>
+          <span class="theory-thumb" data-thumb-id="as6CHRqCJ1o">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          <span class="theory-info">
+            <span class="theory-title">Trabajo respiratorio y suelo pélvico</span>
+            <span class="theory-meta">Ejercicios prácticos · Parte I</span>
+          </span>
+        </a>
+        <a class="theory-card" data-video-id="0BJhUKvGOKo" href="https://www.youtube.com/watch?v=0BJhUKvGOKo" target="_blank" rel="noopener">
+          <span class="theory-num">3</span>
+          <span class="theory-thumb" data-thumb-id="0BJhUKvGOKo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+          <span class="theory-info">
+            <span class="theory-title">Trabajo abdominal</span>
+            <span class="theory-meta">Ejercicios prácticos · Parte II</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <section class="panel-section">
+      <h3>Cómo está periodizado</h3>
+      <p>El programa aplica cuatro principios del entrenamiento basado en evidencia:</p>
+      <ul class="panel-list">
+        <li><strong>Estructura constante por sesión</strong>activación, movilidad, control motor, fuerza y cierre.</li>
+        <li><strong>Sobrecarga progresiva durante la semana</strong>de menor a mayor demanda, con un día pico.</li>
+        <li><strong>Distribución del estímulo</strong>no se acumulan los mismos patrones en días consecutivos.</li>
+        <li><strong>Recuperación activa al final de la semana</strong>el descanso forma parte del entrenamiento.</li>
+      </ul>
+    </section>
+
+    <section class="panel-section">
+      <h3>Estructura de cada sesión (15 min)</h3>
+      <ul class="panel-list">
+        <li><strong>1 · Activación respiratoria  ·  1,5–2 min</strong>Apertura costal con roller. Prepara diafragma y caja torácica.</li>
+        <li><strong>2 · Movilidad lumbo-pélvica  ·  2–3 min</strong>Báscula pélvica, dorso de gato o fitball. Lubrica la columna.</li>
+        <li><strong>3 · Control motor del transverso  ·  2,5–3 min</strong>Pilar metodológico. Sin él, el resto pierde efecto.</li>
+        <li><strong>4 · Trabajo de fuerza  ·  5–7 min</strong>El contenido cambia según el día (paravertebrales, abdominal dinámico, isométrico, planchas o excéntrico).</li>
+        <li><strong>5 · Cierre / elongación  ·  1,5–2 min</strong>Elongación en prono o cuadrupedia. Devuelve la columna a posición neutra.</li>
+      </ul>
+    </section>
+
+    <section class="panel-section">
+      <h3>Lógica semanal</h3>
+      <p>La curva semanal sigue un esquema clásico de <strong>periodización ondulante</strong>: arranca bajo el lunes, sube gradualmente, marca un pico el viernes, mantiene una sesión complementaria intensa pero técnica el sábado y descarga el domingo. Esto permite acumular volumen sin fatiga acumulada y respeta los tiempos de recuperación de los músculos profundos del core.</p>
+    </section>
+
+    <section class="panel-section">
+      <h3>Antes de empezar</h3>
+      <ul class="panel-list">
+        <li><strong>Mira primero los 3 vídeos teóricos del curso</strong>los tienes enlazados al inicio de este panel. La activación correcta del transverso y el suelo pélvico es la base de todo lo demás.</li>
+        <li><strong>Material recomendado</strong>esterilla, foam roller, fitball y pelota pequeña (las dos últimas opcionales en algunos ejercicios).</li>
+        <li><strong>Si llevas tiempo sin moverte</strong>empieza con la mitad de las series las dos primeras semanas. Sube cuando controles la técnica sin compensar.</li>
+        <li class="golden"><strong>Norma de oro</strong>si un ejercicio te genera dolor, sustitúyelo por báscula pélvica o respiración. Molestia muscular sí; dolor punzante o irradiado, no.</li>
+      </ul>
+    </section>
+
+  </div>
+</aside>
+
+<div class="video-modal-backdrop" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
+  <div class="video-modal">
+    <div class="video-modal-header">
+      <span class="video-modal-title" id="videoModalTitle">Vídeo</span>
+      <button class="video-modal-close" id="videoModalClose" aria-label="Cerrar vídeo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="video-modal-body">
+      <video id="videoModalPlayer" controls playsinline webkit-playsinline preload="metadata"></video>
+      <div class="video-modal-fallback" id="videoModalFallback">
+        <p>El archivo en local no está disponible. Puedes verlo en YouTube.</p>
+        <a id="videoModalYoutube" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+          Ver en YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+// ----- Thumbnail URL helpers (local with YouTube fallback) -----
+let LOCAL_THUMBS = true;  // optimistic: assume user has run descargar_thumbnails.py
+const thumbUrl = (id, size) => `thumbs/${id}_${size}.jpg`;
+const ytThumb  = (id, size) => `https://img.youtube.com/vi/${id}/${size === 'hq' ? 'hqdefault' : 'mqdefault'}.jpg`;
+function pickThumb(id, size){ return LOCAL_THUMBS ? thumbUrl(id, size) : ytThumb(id, size); }
+function applyTheoryThumbs(){
+  document.querySelectorAll('.theory-thumb[data-thumb-id]').forEach(el => {
+    el.style.backgroundImage = `url("${pickThumb(el.dataset.thumbId, 'mq')}")`;
+  });
+}
+// Detect once on startup whether the thumbs/ folder is populated.
+(function detectLocalThumbs(){
+  const probe = new Image();
+  probe.onload = () => { /* local thumbs available; defaults already correct */ applyTheoryThumbs(); };
+  probe.onerror = () => {
+    LOCAL_THUMBS = false;
+    applyTheoryThumbs();
+    // Re-render daily videos with YouTube URLs
+    if (typeof renderAll === 'function') renderAll();
+  };
+  probe.src = thumbUrl('giotibSftrc', 'mq');
+})();
+
+// ============================================================
+// DATA
+// ============================================================
+const PROGRAMA = {
+  lunes:{
+    nombre:"Lunes", enfoque:"Reset y control motor", carga:1,
+    queSeTrabaja:"Activar transverso, recuperar movilidad lumbo-pélvica. Iso suaves.",
+    ejercicios:[
+      {bloque:"1. Activación", nombre:"Apertura costal con roller", videoId:"GhGrQ9dVnuE", tiempo:"2 min", series:"8–10 ciclos lentos (4s in / 6s ex)", notas:"Reset respiratorio. Calentamiento. Tumbada longitudinalmente sobre el roller."},
+      {bloque:"2. Movilidad", nombre:"Báscula pélvica", videoId:"XTOIGMzhX3Y", tiempo:"1,5 min", series:"1 × 12 reps", notas:"Conciencia lumbo-pélvica. Movimiento lento, sin dolor."},
+      {bloque:"2. Movilidad", nombre:"Dorso de gato", videoId:"Jo0Zphcvrsk", tiempo:"1,5 min", series:"1 × 8 reps", notas:"Movilidad segmentaria de columna. Coordina con la respiración."},
+      {bloque:"3. Control motor", nombre:"Transverso abdomen", videoId:"VagLLmUAsuM", tiempo:"3 min", series:"3 × 10 contracciones de 5–6 s", notas:"Pilar de la semana. Sin apnea: respira durante la contracción."},
+      {bloque:"4. Fuerza", nombre:"Trabajo recto abdominal en isometría", videoId:"8YNuVB15s74", tiempo:"2 min", series:"3 × 20 s", notas:"Iso introductoria, baja carga. Respira durante el mantenimiento."},
+      {bloque:"4. Fuerza", nombre:"Dorsal inferior en prono", videoId:"SnIx9dvkQw0", tiempo:"2 min", series:"2 × 10 reps con 3 s", notas:"Equilibrio anterior/posterior. No compenses con cervicales."},
+      {bloque:"5. Cierre", nombre:"Elongación en prono", videoId:"kNE_HlL9iMU", tiempo:"2 min", series:"60 s mantenimiento", notas:"Descarga lumbar. Postura del niño o variante."}
+    ]
+  },
+  martes:{
+    nombre:"Martes", enfoque:"Estabilización (regresión)", carga:2,
+    queSeTrabaja:"Planchas con rodillas + paravertebrales medios.",
+    ejercicios:[
+      {bloque:"1. Activación", nombre:"Apertura costal con roller", videoId:"GhGrQ9dVnuE", tiempo:"1,5 min", series:"6 ciclos", notas:"Calentamiento corto."},
+      {bloque:"2. Movilidad", nombre:"Movilidad pelvis fitball ante-retro", videoId:"9Rhx1PmHwds", tiempo:"2 min", series:"2 × 10 reps", notas:"Si no tienes fitball, sustituye por báscula pélvica."},
+      {bloque:"3. Control motor", nombre:"Transverso roller MMII 1", videoId:"qBNvg3uUhrk", tiempo:"3 min", series:"2 × 10 reps", notas:"Mantén lumbar neutro durante todo el rango."},
+      {bloque:"4. Fuerza", nombre:"Plancha anterior con apoyo en rodillas", videoId:"idNd2kjXotw", tiempo:"2 min", series:"3 × 25 s", notas:"Línea recta hombros-rodillas. Versión regresada."},
+      {bloque:"4. Fuerza", nombre:"Plancha lateral con apoyo de rodillas", videoId:"NA5Ms11e6-M", tiempo:"2,5 min", series:"2 × 20 s por lado", notas:"Cadera elevada, sin rotar el tronco."},
+      {bloque:"4. Fuerza", nombre:"Dorsal medio en prono", videoId:"TODmZMq-rjY", tiempo:"2 min", series:"2 × 10 reps con 3 s", notas:"Aproximar escápulas (juntar omóplatos)."},
+      {bloque:"5. Cierre", nombre:"Elongación en cuadrupedia", videoId:"RUMfsWrfYL0", tiempo:"2 min", series:"2 × 5 reps por lado, 5 s", notas:"Re-equilibrio tras las planchas."}
+    ]
+  },
+  miercoles:{
+    nombre:"Miércoles", enfoque:"Movilidad + abdominal dinámico", carga:2,
+    queSeTrabaja:"Pelvis con fitball y abdominal con MMII.",
+    ejercicios:[
+      {bloque:"1. Activación", nombre:"Apertura costal con roller", videoId:"GhGrQ9dVnuE", tiempo:"1,5 min", series:"6 ciclos", notas:"Calentamiento."},
+      {bloque:"2. Movilidad", nombre:"Movilidad pelvis fitball lateral", videoId:"_-t2Pej3ASk", tiempo:"1,5 min", series:"2 × 10 reps por lado", notas:"Sin elevar los pies del suelo."},
+      {bloque:"2. Movilidad", nombre:"Movilidad pelvis fitball círculos", videoId:"oPAIxsmsbpI", tiempo:"1,5 min", series:"2 × 5 círculos cada sentido", notas:"Movimiento amplio y lento."},
+      {bloque:"3. Control motor", nombre:"Transverso roller MMSS", videoId:"W022GlqzvcI", tiempo:"2,5 min", series:"2 × 10 reps", notas:"Pelvis estable mientras se mueven los brazos."},
+      {bloque:"4. Fuerza", nombre:"Trabajo abdominal con MMII", videoId:"DabJilrrduY", tiempo:"2,5 min", series:"2 × 10 reps", notas:"Lumbar pegada al suelo en todo momento."},
+      {bloque:"4. Fuerza", nombre:"Trabajo abdominal MMII alternos 1", videoId:"QY_tbpSYguU", tiempo:"3 min", series:"2 × 10 reps por lado", notas:"Progresión del ejercicio anterior."},
+      {bloque:"5. Cierre", nombre:"Dorso de gato", videoId:"Jo0Zphcvrsk", tiempo:"1,5 min", series:"5 reps muy lentas", notas:"Liberación de columna."}
+    ]
+  },
+  jueves:{
+    nombre:"Jueves", enfoque:"Iso integrado + paravertebrales", carga:3,
+    queSeTrabaja:"Recto y oblicuo isométricos + dorsal superior.",
+    ejercicios:[
+      {bloque:"1. Activación", nombre:"Apertura costal con roller", videoId:"GhGrQ9dVnuE", tiempo:"1,5 min", series:"6 ciclos", notas:"Calentamiento."},
+      {bloque:"2. Movilidad", nombre:"Báscula pélvica", videoId:"XTOIGMzhX3Y", tiempo:"1 min", series:"1 × 10 reps", notas:"Re-conexión lumbar."},
+      {bloque:"3. Control motor", nombre:"Transverso roller con pelota entre rodillas", videoId:"nxCkOY5bdk8", tiempo:"3 min", series:"2 × 10 reps", notas:"Apretar la pelota constante (aductores + transverso)."},
+      {bloque:"4. Fuerza", nombre:"Trabajo recto abdomen isometría prono", videoId:"IgO_A_bCKHs", tiempo:"2 min", series:"3 × 20 s", notas:"Sin hundir la zona lumbar."},
+      {bloque:"4. Fuerza", nombre:"Oblicuo isometría con pelota", videoId:"MhCi6hTXcxo", tiempo:"2,5 min", series:"2 × 20 s por lado", notas:"Activar oblicuos contra la pelota."},
+      {bloque:"4. Fuerza", nombre:"Dorsal superior en prono", videoId:"k_qzN8TTZUI", tiempo:"2,5 min", series:"2 × 10 reps con 3 s", notas:"Cervicales relajadas, mirada al suelo."},
+      {bloque:"5. Cierre", nombre:"Elongación en prono", videoId:"kNE_HlL9iMU", tiempo:"2 min", series:"60 s mantenimiento", notas:"Estiramiento global anterior."}
+    ]
+  },
+  viernes:{
+    nombre:"Viernes", enfoque:"Planchas completas + dinámico", carga:4,
+    queSeTrabaja:"Plancha anterior y lateral en versión avanzada.",
+    ejercicios:[
+      {bloque:"1. Activación", nombre:"Apertura costal con roller", videoId:"GhGrQ9dVnuE", tiempo:"1,5 min", series:"6 ciclos", notas:"Calentamiento."},
+      {bloque:"2. Movilidad", nombre:"Movilidad pelvis fitball ante-retro", videoId:"9Rhx1PmHwds", tiempo:"1,5 min", series:"1 × 10 reps", notas:"Pre-activación."},
+      {bloque:"3. Control motor", nombre:"Transverso roller MMII 2", videoId:"2KFVPekaRLk", tiempo:"2,5 min", series:"2 × 10 reps", notas:"Progresión avanzada del transverso."},
+      {bloque:"4. Fuerza", nombre:"Trabajo abdominal MMII alterno 2", videoId:"x89vYRiXZrE", tiempo:"2,5 min", series:"2 × 10 reps por lado", notas:"Control en el descenso."},
+      {bloque:"4. Fuerza", nombre:"Plancha anterior", videoId:"IFmYTa2ESeQ", tiempo:"2,5 min", series:"3 × 30–40 s", notas:"Versión completa. Si pesa, baja a la de rodillas."},
+      {bloque:"4. Fuerza", nombre:"Plancha lateral sobre una rodilla", videoId:"HuCIYhC3FQc", tiempo:"2,5 min", series:"2 × 20 s por lado", notas:"Progresión lateral. Cadera alineada."},
+      {bloque:"5. Cierre", nombre:"Elongación en prono", videoId:"kNE_HlL9iMU", tiempo:"2 min", series:"60 s mantenimiento", notas:"Descarga obligatoria tras día pico."}
+    ]
+  },
+  sabado:{
+    nombre:"Sábado", enfoque:"Excéntrico + cierre oblicuos", carga:4,
+    queSeTrabaja:"Estímulo excéntrico potente.",
+    ejercicios:[
+      {bloque:"1. Activación", nombre:"Apertura costal con roller", videoId:"GhGrQ9dVnuE", tiempo:"1,5 min", series:"6 ciclos", notas:"Calentamiento."},
+      {bloque:"2. Movilidad", nombre:"Movilidad pelvis fitball círculos", videoId:"oPAIxsmsbpI", tiempo:"1,5 min", series:"1 × 5 círculos cada sentido", notas:"Movilidad fluida."},
+      {bloque:"3. Control motor", nombre:"Transverso abdomen", videoId:"VagLLmUAsuM", tiempo:"2 min", series:"2 × 10 contracciones de 6 s", notas:"Re-conectar el patrón base."},
+      {bloque:"4. Fuerza", nombre:"Trabajo abdominal en excéntrico", videoId:"mpDpM4kYKQ4", tiempo:"3 min", series:"2 × 6–8 reps (4–6 s descenso)", notas:"Estímulo excéntrico potente. La fase de descenso debe ser muy lenta."},
+      {bloque:"4. Fuerza", nombre:"Oblicuo isometría 2", videoId:"6KHRVjRO9LE", tiempo:"2,5 min", series:"2 × 20 s por lado", notas:"Cierra el bloque oblicuo de la semana."},
+      {bloque:"5. Cierre", nombre:"Elongación en cuadrupedia", videoId:"RUMfsWrfYL0", tiempo:"2 min", series:"2 × 5 reps por lado, 5 s", notas:"Reactiva y estira a la vez."},
+      {bloque:"5. Cierre", nombre:"Dorso de gato", videoId:"Jo0Zphcvrsk", tiempo:"1,5 min", series:"5 reps muy lentas", notas:"Liberación final."}
+    ]
+  },
+  domingo:{
+    nombre:"Domingo", enfoque:"Recuperación activa", carga:1,
+    queSeTrabaja:"Movilidad y estiramientos. Reset.",
+    ejercicios:[
+      {bloque:"1. Activación", nombre:"Apertura costal con roller", videoId:"GhGrQ9dVnuE", tiempo:"2 min", series:"8 ciclos muy lentos", notas:"Modo recuperación. Sin esfuerzo."},
+      {bloque:"2. Movilidad", nombre:"Báscula pélvica", videoId:"XTOIGMzhX3Y", tiempo:"1,5 min", series:"1 × 10 reps lentas", notas:"Suave."},
+      {bloque:"2. Movilidad", nombre:"Dorso de gato", videoId:"Jo0Zphcvrsk", tiempo:"1,5 min", series:"1 × 8 reps", notas:"Movilidad articular."},
+      {bloque:"2. Movilidad", nombre:"Movilidad pelvis fitball lateral", videoId:"_-t2Pej3ASk", tiempo:"2 min", series:"1 × 10 reps por lado", notas:"Si no hay fitball: omitir."},
+      {bloque:"5. Cierre", nombre:"Elongación en cuadrupedia", videoId:"RUMfsWrfYL0", tiempo:"2 min", series:"2 × 5 reps por lado, 5 s", notas:"Estiramiento activo."},
+      {bloque:"5. Cierre", nombre:"Elongación en prono", videoId:"kNE_HlL9iMU", tiempo:"3 min", series:"2 × 60 s", notas:"Estiramiento prolongado de descarga."},
+      {bloque:"5. Cierre", nombre:"Respiración diafragmática", videoId:"GhGrQ9dVnuE", tiempo:"1,5 min", series:"10 respiraciones profundas", notas:"Cierre semanal con conciencia corporal."}
+    ]
+  }
+};
+
+const DAY_KEYS = ["lunes","martes","miercoles","jueves","viernes","sabado","domingo"];
+const DAY_LOAD_LABEL = {1:"suave",2:"medio",3:"medio-alto",4:"alto"};
+
+// ============================================================
+// STATE
+// ============================================================
+let currentDay = null;
+let currentExercise = 0;
+
+function getTodayKey(){
+  const d = new Date().getDay(); // 0=Dom .. 6=Sáb
+  return ["domingo","lunes","martes","miercoles","jueves","viernes","sabado"][d];
+}
+
+function loadCompleted(dayKey){
+  try{
+    const raw = localStorage.getItem("ee_done_"+dayKey);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+function saveCompleted(dayKey, arr){
+  try{ localStorage.setItem("ee_done_"+dayKey, JSON.stringify(arr)); }catch(e){}
+}
+function isDone(dayKey, idx){ return loadCompleted(dayKey).includes(idx); }
+function toggleDone(dayKey, idx){
+  const arr = loadCompleted(dayKey);
+  const i = arr.indexOf(idx);
+  if(i>=0) arr.splice(i,1); else arr.push(idx);
+  saveCompleted(dayKey, arr);
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+const $ = id => document.getElementById(id);
+
+function renderDays(){
+  const today = getTodayKey();
+  const html = DAY_KEYS.map(key=>{
+    const day = PROGRAMA[key];
+    const isToday = key===today;
+    return `<button class="day-tab ${key===currentDay?'active':''} ${isToday?'today':''}" data-day="${key}">
+      <span class="day-name">${day.nombre}</span>
+      <span class="day-load">${DAY_LOAD_LABEL[day.carga]}</span>
+    </button>`;
+  }).join("");
+  $("days").innerHTML = html;
+  $("days").querySelectorAll(".day-tab").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      currentDay = btn.dataset.day;
+      currentExercise = 0;
+      renderAll();
+    });
+  });
+}
+
+function renderHero(){
+  const day = PROGRAMA[currentDay];
+  const bars = [1,2,3,4].map(n=>`<span class="${n<=day.carga?'on':''}"></span>`).join("");
+  $("dayHero").innerHTML = `
+    <div class="hero-block focus">
+      <div class="label">Enfoque</div>
+      <div class="value">${day.enfoque.replace(/^([^:]+):/,'<em>$1</em>:')}</div>
+    </div>
+    <div class="hero-block">
+      <div class="label">Carga</div>
+      <div class="value">${DAY_LOAD_LABEL[day.carga]}<span class="load-bars">${bars}</span></div>
+    </div>
+    <div class="hero-block">
+      <div class="label">Qué se trabaja</div>
+      <div class="desc">${day.queSeTrabaja}</div>
+    </div>
+  `;
+}
+
+function renderPlayer(){
+  const day = PROGRAMA[currentDay];
+  const ex = day.ejercicios[currentExercise];
+  const blockMatch = ex.bloque.match(/^(\d+)\.\s*(.+)$/);
+  const blockNum = blockMatch ? blockMatch[1] : "";
+  const blockName = blockMatch ? blockMatch[2] : ex.bloque;
+
+  $("blockNum").textContent = blockNum;
+  $("blockName").textContent = blockName;
+  $("exCounter").textContent = `Ejercicio ${currentExercise+1} de ${day.ejercicios.length}`;
+
+  const link = $("playerLink");
+  const video = $("playerVideo");
+  const thumb = $("playerThumb");
+
+  // Always set up the YouTube fallback (visible by default; hidden if local video loads)
+  link.href = `https://www.youtube.com/watch?v=${ex.videoId}`;
+  thumb.src = thumbUrl(ex.videoId, "hq");
+  thumb.onerror = () => { thumb.onerror=null; thumb.src = ytThumb(ex.videoId, "hq"); };
+
+  // Try to load a local video file. If it exists, swap to the <video> element.
+  link.classList.remove("hidden");
+  video.classList.remove("shown");
+  video.pause();
+
+  const localUrl = `videos/${ex.videoId}.mp4`;
+  video.poster = LOCAL_THUMBS ? thumbUrl(ex.videoId, "hq") : ytThumb(ex.videoId, "hq");
+
+  // Replace listeners idempotently by using onX properties
+  video.onloadedmetadata = () => {
+    link.classList.add("hidden");
+    video.classList.add("shown");
+  };
+  video.onerror = () => {
+    // No local video: keep the YouTube fallback visible
+    link.classList.remove("hidden");
+    video.classList.remove("shown");
+  };
+  video.src = localUrl;
+  video.load();
+
+  const info = document.querySelector(".exercise-info");
+  info.classList.remove("fade-in");
+  void info.offsetWidth;
+  info.classList.add("fade-in");
+
+  $("exName").textContent = ex.nombre;
+  $("exTime").textContent = ex.tiempo;
+  $("exDosage").textContent = ex.series;
+  $("exNotes").textContent = ex.notas;
+
+  // Done button state
+  const done = isDone(currentDay, currentExercise);
+  const btn = $("btnDone");
+  const lbl = $("btnDoneLbl");
+  btn.classList.toggle("done", done);
+  btn.classList.toggle("primary", !done);
+  lbl.textContent = done ? "Completado" : "Marcar como hecho";
+
+  // Prev/Next state
+  $("btnPrev").disabled = currentExercise===0;
+  $("btnNext").disabled = currentExercise===day.ejercicios.length-1;
+  $("btnPrev").style.opacity = currentExercise===0 ? 0.4 : 1;
+  $("btnNext").style.opacity = currentExercise===day.ejercicios.length-1 ? 0.4 : 1;
+}
+
+function renderList(){
+  const day = PROGRAMA[currentDay];
+  const html = day.ejercicios.map((ex,i)=>{
+    const done = isDone(currentDay, i);
+    const active = i===currentExercise;
+    const numContent = done ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="14" height="14"><path d="M5 12l5 5L20 7"/></svg>` : (i+1);
+    return `<button class="ex-item ${active?'active':''} ${done?'completed':''}" data-idx="${i}">
+      <span class="ex-num" data-action="toggle" data-idx="${i}" title="${done?'Marcar como pendiente':'Marcar como hecho'}">${numContent}</span>
+      <span class="ex-thumb" style="background-image:url('${pickThumb(ex.videoId, 'mq')}')"></span>
+      <span class="ex-info">
+        <span class="ex-name">${ex.nombre}</span>
+        <span class="ex-meta">${ex.tiempo} · ${ex.bloque.replace(/^\d+\.\s*/,'')}</span>
+      </span>
+    </button>`;
+  }).join("");
+  $("exList").innerHTML = html;
+  $("exList").querySelectorAll(".ex-item").forEach(btn=>{
+    btn.addEventListener("click",e=>{
+      // If clicked the number circle, toggle done; otherwise navigate.
+      const numEl = e.target.closest('[data-action="toggle"]');
+      if(numEl){
+        e.stopPropagation();
+        toggleDone(currentDay, parseInt(numEl.dataset.idx,10));
+        renderList();
+        renderProgress();
+        renderPlayer();
+        return;
+      }
+      currentExercise = parseInt(btn.dataset.idx,10);
+      renderAll();
+    });
+  });
+}
+
+function renderProgress(){
+  const day = PROGRAMA[currentDay];
+  const total = day.ejercicios.length;
+  const done = loadCompleted(currentDay).filter(i=>i<total).length;
+  $("progFill").style.width = (done/total*100)+"%";
+  $("progText").textContent = `${done} / ${total}`;
+}
+
+function renderAll(){
+  renderDays();
+  renderHero();
+  renderPlayer();
+  renderList();
+  renderProgress();
+}
+
+// ============================================================
+// EVENTS
+// ============================================================
+$("btnPrev").addEventListener("click",()=>{
+  if(currentExercise>0){ currentExercise--; renderPlayer(); renderList(); }
+});
+$("btnNext").addEventListener("click",()=>{
+  const day = PROGRAMA[currentDay];
+  if(currentExercise<day.ejercicios.length-1){ currentExercise++; renderPlayer(); renderList(); }
+});
+$("btnDone").addEventListener("click",()=>{
+  toggleDone(currentDay, currentExercise);
+  // Auto-advance if just completed and not last
+  const wasDone = isDone(currentDay, currentExercise);
+  renderPlayer(); renderList(); renderProgress();
+  const day = PROGRAMA[currentDay];
+  if(wasDone && currentExercise<day.ejercicios.length-1){
+    setTimeout(()=>{ currentExercise++; renderPlayer(); renderList(); }, 350);
+  }
+});
+$("btnReset").addEventListener("click",()=>{
+  if(confirm("¿Reiniciar el progreso de "+PROGRAMA[currentDay].nombre+"?")){
+    saveCompleted(currentDay, []);
+    renderList(); renderProgress(); renderPlayer();
+  }
+});
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA") return;
+  if(e.key==="ArrowLeft"){ $("btnPrev").click(); }
+  if(e.key==="ArrowRight"){ $("btnNext").click(); }
+  if(e.key===" "||e.key==="Enter"){ if(e.target===document.body){ e.preventDefault(); $("btnDone").click(); } }
+  if(e.key==="Escape"){
+    if($("videoModal").classList.contains("open")) closeTheoryVideo();
+    else closePanel();
+  }
+});
+
+// ----- Info panel -----
+function openPanel(){
+  $("infoPanel").classList.add("open");
+  $("panelBackdrop").classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closePanel(){
+  $("infoPanel").classList.remove("open");
+  $("panelBackdrop").classList.remove("open");
+  document.body.style.overflow="";
+}
+$("btnInfo").addEventListener("click", openPanel);
+$("panelClose").addEventListener("click", closePanel);
+$("panelBackdrop").addEventListener("click", closePanel);
+
+// ----- Theory videos modal (plays local file, falls back to YouTube) -----
+function openTheoryVideo(videoId, title){
+  const modal = $("videoModal");
+  const player = $("videoModalPlayer");
+  const fallback = $("videoModalFallback");
+  const ytLink = $("videoModalYoutube");
+  $("videoModalTitle").textContent = title;
+  ytLink.href = `https://www.youtube.com/watch?v=${videoId}`;
+  fallback.classList.remove("show");
+  player.style.display = "";
+  player.onerror = () => {
+    player.style.display = "none";
+    fallback.classList.add("show");
+  };
+  player.src = `videos/${videoId}.mp4`;
+  player.load();
+  modal.classList.add("open");
+  document.body.style.overflow="hidden";
+  // Try to autoplay (some browsers block this if not muted, but we try)
+  player.play().catch(()=>{});
+}
+function closeTheoryVideo(){
+  const modal = $("videoModal");
+  const player = $("videoModalPlayer");
+  player.pause();
+  player.removeAttribute("src");
+  player.load();
+  modal.classList.remove("open");
+  // Don't restore body overflow if info panel is still open
+  if(!$("infoPanel").classList.contains("open")) document.body.style.overflow="";
+}
+document.querySelectorAll(".theory-card[data-video-id]").forEach(card => {
+  card.addEventListener("click", e => {
+    e.preventDefault();
+    const vid = card.dataset.videoId;
+    const title = card.querySelector(".theory-title").textContent;
+    openTheoryVideo(vid, title);
+  });
+});
+$("videoModalClose").addEventListener("click", closeTheoryVideo);
+$("videoModal").addEventListener("click", e => {
+  if(e.target === $("videoModal")) closeTheoryVideo();
+});
+
+// ============================================================
+// INIT
+// ============================================================
+currentDay = getTodayKey();
+currentExercise = 0;
+renderAll();
+</script>
+</body>
+</html>
